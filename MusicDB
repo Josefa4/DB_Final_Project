@@ -1,0 +1,125 @@
+--Create tables for the DB
+CREATE TABLE Song(id INTEGER AUTO_INCREMENT not null ,
+  title VARCHAR(50),
+  album VARCHAR(50),
+  runtime TIME,
+  PRIMARY KEY(id));
+CREATE TABLE Artist(id INTEGER AUTO_INCREMENT not null,
+  name VARCHAR(50),
+  PRIMARY KEY(id));
+CREATE TABLE User(id INTEGER AUTO_INCREMENT not null,
+  name VARCHAR(20),
+  --Create check: form of email address (Regex)
+  email VARCHAR(20) UNIQUE CHECK (email LIKE '%@%.%'),
+  premium BOOLEAN,
+  bank_account VARCHAR(20),
+   PRIMARY KEY(id));
+CREATE TABLE Musician(id INTEGER AUTO_INCREMENT NOT NULL,
+  name VARCHAR(20),
+   PRIMARY KEY(id));
+CREATE TABLE Song_Genre(song_id INTEGER,
+  genre VARCHAR(20),
+  FOREIGN KEY(song_id) REFERENCES Song(id),
+  PRIMARY KEY(song_id, genre));
+CREATE TABLE Song_Artist(song_id INTEGER,
+  artist_id INTEGER,
+  FOREIGN KEY(song_id) REFERENCES Song(id),
+  FOREIGN KEY(artist_id) REFERENCES Artist(id),
+  PRIMARY KEY(song_id, artist_id));
+CREATE TABLE User_Likes(user_id INTEGER,
+  song_id INTEGER,
+  FOREIGN KEY(song_id) REFERENCES Song(id),
+  FOREIGN KEY(user_id) REFERENCES User(id),
+  PRIMARY KEY(user_id, song_id));
+CREATE TABLE Artist_Member(artist_id INTEGER,
+  musician_id INTEGER,
+  FOREIGN KEY(artist_id) REFERENCES Artist(id),
+  FOREIGN KEY(musician_id) REFERENCES Musician(id),
+  PRIMARY KEY(artist_id, musician_id));
+
+
+
+
+--Populate the database
+INSERT INTO Song (id, title, album, runtime) VALUES(1, 'Blood And Whiskey', 'High Noon Over Camelot', '00:03:45');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Once and Future King', 'High Noon Over Camelot', '00:05:29');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Her Sweet Kiss', 'The Witcher', '00:02:00');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Fair', 'The Horror And The Wild', '00:06:18');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Pruning Shears', 'Love Run', '00:04:14');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Nina Cried Power', 'Wasteland, Baby!', '00:03:45');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'Sunlight', 'Wasteland, Baby!', '00:04:17');
+INSERT INTO Song (id, title, album, runtime) VALUES(DEFAULT, 'High Note', 'Livin On A High Note','00:03:31');
+
+INSERT INTO Artist(id, name) VALUES(DEFAULT, 'The Mechanisms');
+INSERT INTO Artist(id, name) VALUES(DEFAULT, 'The Amazing Devil');
+INSERT INTO Artist(id, name) VALUES(DEFAULT, 'Hozier');
+INSERT INTO Artist(id, name) VALUES(DEFAULT, 'Joey Batey');
+INSERT INTO Artist(id, name) VALUES(DEFAULT, 'Mavis Stapele');
+
+INSERT INTO User(id, name, email, premium, bank_account) VALUES(DEFAULT, 'Jamie4', 'JSmith@gmail.com', FALSE, '');
+INSERT INTO User(id, name, email, premium, bank_account) VALUES(DEFAULT, 'Chriscat', 'namename@bing.com', TRUE, 'GR96 0810 0010 0000 0123 4567 890');
+INSERT INTO User(id, name, email, premium, bank_account) VALUES(DEFAULT, 'Olly77', 'jemapelle@email.com', FALSE, '');
+INSERT INTO User(id, name, email, premium, bank_account) VALUES(DEFAULT, 'MrA', 'clovicek@mail.ru', FALSE, '');
+INSERT INTO User(id, name, email, premium, bank_account) VALUES(DEFAULT, 'Vivielle', 'mort@gmail.com', TRUE, 'BE71 0961 2345 6769');
+
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Jonathan Sims');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Jessica Law');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Kofi Young');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Joey Batey');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Madeleine Hyland');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Mavis Stapele');
+INSERT INTO Musician(id, name) VALUES(DEFAULT, 'Andrew John Hozier-Byrne');
+
+INSERT INTO Song_Genre(song_id, genre) VALUES(1, 'steampunk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(1, 'folk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(2, 'folk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(2, 'ballad');
+INSERT INTO Song_Genre(song_id, genre) VALUES(3, 'pop');
+INSERT INTO Song_Genre(song_id, genre) VALUES(3, 'ballad');
+INSERT INTO Song_Genre(song_id, genre) VALUES(4, 'folk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(5, 'folk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(5, 'pop');
+INSERT INTO Song_Genre(song_id, genre) VALUES(6, 'pop');
+INSERT INTO Song_Genre(song_id, genre) VALUES(6, 'folk');
+INSERT INTO Song_Genre(song_id, genre) VALUES(7, 'pop');
+INSERT INTO Song_Genre(song_id, genre) VALUES(8, 'blues');
+
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(1, 1);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(2, 1);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(3, 4);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(4, 2);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(5, 2);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(6, 3);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(7, 3);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(8, 5);
+INSERT INTO Song_Artist(song_id, artist_id) VALUES(6, 5);
+
+INSERT INTO User_Likes(user_id, song_id) VALUES(1, 4);
+INSERT INTO User_Likes(user_id, song_id) VALUES(1, 2);
+INSERT INTO User_Likes(user_id, song_id) VALUES(2, 3);
+INSERT INTO User_Likes(user_id, song_id) VALUES(3, 5);
+INSERT INTO User_Likes(user_id, song_id) VALUES(2, 7);
+INSERT INTO User_Likes(user_id, song_id) VALUES(4, 3);
+INSERT INTO User_Likes(user_id, song_id) VALUES(4, 1);
+INSERT INTO User_Likes(user_id, song_id) VALUES(3, 1);
+INSERT INTO User_Likes(user_id, song_id) VALUES(3, 2);
+INSERT INTO User_Likes(user_id, song_id) VALUES(3, 6);
+INSERT INTO User_Likes(user_id, song_id) VALUES(4, 5);
+INSERT INTO User_Likes(user_id, song_id) VALUES(5, 8);
+
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(1, 1);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(1, 2);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(1, 3);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(2, 4);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(2, 5);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(3, 7);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(4, 4);
+INSERT INTO Artist_Member(artist_id, musician_id) VALUES(5, 6);
+
+--Create view
+CREATE VIEW liked_overview AS
+  SELECT Song.title, Song.album, Artist.name
+  FROM Song, Artist
+  WHERE Song.id IN ( SELECT User_Likes.song_id WHERE User_Likes.user_id=3)
+  AND Song.id = Song_Artist.Song_ID
+  AND Artist.id = Song_Artist.artist_id;
